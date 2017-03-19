@@ -1,5 +1,4 @@
 #include<windows.h>
-HFONT hFont;
 class button
 {
 public:
@@ -24,7 +23,18 @@ public:
 			return 1;
 		return 0;
 	}
-}m[5]{ { 200,90,300,190,CreateSolidBrush(RGB(0,255,0)),"Play" },{ 200,200,300,300,CreateSolidBrush(RGB(0,255,0)),"Settings" } ,{ 200,310,300,410,CreateSolidBrush(RGB(0,255,0)),"Help" },{200,420,300,520,CreateSolidBrush(RGB(100,20,30)),"About"},{200,530,300,630,CreateSolidBrush(RGB(20,30,40)),"Exit"} };
+}m[10]{
+{ 195,80,305,190,CreateSolidBrush(RGB(187,96,25)),"Play" },
+{ 195,200,305,310,CreateSolidBrush(RGB(187,96,25)),"Settings" },
+{ 195,320,305,430,CreateSolidBrush(RGB(187,96,25)),"Help" },
+{ 195,440,305,550,CreateSolidBrush(RGB(187,96,25)),"About"},
+{ 195,560,305,670,CreateSolidBrush(RGB(187,96,25)),"Exit"},
+{ 200,85,300,185,CreateSolidBrush(RGB(255,252,211)),"Play" },
+{ 200,205,300,305,CreateSolidBrush(RGB(255,252,211)),"Settings" },
+{ 200,325,300,425,CreateSolidBrush(RGB(255,252,211)),"Help" },
+{ 200,445,300,545,CreateSolidBrush(RGB(255,252,211)),"About" },
+{ 200,565,300,665,CreateSolidBrush(RGB(255,252,211)),"Exit" },
+};
 LRESULT CALLBACK Menu_Function(HWND Descriptor, UINT massage, WPARAM wparam, LPARAM lparam);
 void draw(HWND Descriptor);
 int WINAPI	WinMain(HINSTANCE Descriptor_program, HINSTANCE, LPSTR, int)
@@ -37,7 +47,7 @@ int WINAPI	WinMain(HINSTANCE Descriptor_program, HINSTANCE, LPSTR, int)
 	MSG massage_code;
 	while (GetMessage(&massage_code, NULL, 0, 0))
 	{
-		TranslateMessage(&massage_code);				//Преобразует сообщения клавиш в символы
+		TranslateMessage(&massage_code);				
 		DispatchMessage(&massage_code);
 	}
 	return 0;
@@ -46,11 +56,11 @@ void ButtonFunction(int i)
 {
 	switch (i)
 	{
-	case 0: 
-		m[0].Brush = CreateSolidBrush(RGB(100, 100, 50));
-		strcpy_s(m[0].inf, 6, "Hello");
+	case 5: 
+		m[5].Brush = CreateSolidBrush(RGB(100, 100, 50));
+		strcpy_s(m[5].inf, 6, "Hello");
 		break;
-	case 4:PostQuitMessage(0); return;
+	case 9:PostQuitMessage(0); return;
 	default: return;
 	}
 	InvalidateRect(NULL, NULL, TRUE);
@@ -60,12 +70,9 @@ LRESULT CALLBACK Menu_Function(HWND Descriptor, UINT massage, WPARAM wparam, LPA
 	switch (massage)
 	{
 	case WM_PAINT:
-		hFont = CreateFont(14, 0, 0, 0, FW_DONTCARE, FALSE, FALSE, FALSE, DEFAULT_CHARSET,
-			OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-			DEFAULT_PITCH | FF_SWISS, "Arial");
 		draw(Descriptor); return 0;
 	case WM_LBUTTONUP:
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 10; i++)
 			if (m[i].CheckClick(LOWORD(lparam), HIWORD(lparam)))
 				ButtonFunction(i);
 		return 0;
@@ -80,8 +87,7 @@ void draw(HWND Descriptor)
 {
 	PAINTSTRUCT Paintstruct;
 	HDC Context = BeginPaint(Descriptor, &Paintstruct);
-	for (int i = 0; i < 5; i++)m[i].draw(Context);
-	RECT rect = { 1,1,100,100 };
+	for (int i = 0; i < 10; i++)m[i].draw(Context);
 	EndPaint(Descriptor, &Paintstruct);
 	ReleaseDC(Descriptor, Context);
 }
